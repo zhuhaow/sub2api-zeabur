@@ -1,0 +1,48 @@
+name: Publish Zeabur Template
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - template.yaml
+      - scripts/publish-template.sh
+      - .github/workflows/publish-template.yml
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+
+    env:
+      ZEABUR_TOKEN: ${{ secrets.ZEABUR_TOKEN }}
+      ZEABUR_TEMPLATE_CODE: BNV1TZ
+      TEMPLATE_FILE: template.yaml
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+
+      - name: Setup Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: "3.3"
+
+      - name: Verify required secret
+        run: |
+          if [ -z "${ZEABUR_TOKEN}" ]; then
+            echo "Missing required secret: ZEABUR_TOKEN" >&2
+            exit 1
+          fi
+
+      - name: Publish template
+        run: |
+          chmod +x scripts/publish-template.sh
+          ./scripts/publish-template.sh
