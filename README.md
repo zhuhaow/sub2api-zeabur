@@ -30,7 +30,7 @@ npx zeabur@latest template update -c <template-code> -f template.yaml
 
 ## Implementation notes
 
-- The template uses the pinned Docker image `weishaw/sub2api:0.1.106`.
+- The template uses the pinned Docker image `weishaw/sub2api:0.1.110`.
 - PostgreSQL and Redis use internal networking only with port forwarding disabled.
 - The public endpoint is the `Sub2API` HTTP service bound through the `PUBLIC_DOMAIN` variable.
 - `TOTP_ENCRYPTION_KEY` is intentionally left unset by default. If you want 2FA to persist across restarts, set it manually after deployment to a 64-character hex string from `openssl rand -hex 32`.
